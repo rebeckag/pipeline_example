@@ -1,2 +1,2 @@
 # pipeline_example
-Test of proposed "pipline".
+Test of proposed "pipeline".
