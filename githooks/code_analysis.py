@@ -53,7 +53,7 @@ def indent_output(output):
 def py_files_changed():
     # Run the git command that gets the filenames of every file that has been
     # locally modified since the last commit.
-    output = execute_system_cmd("git diff --staged --name-only HEAD".split())
+    output = execute_system_cmd("git diff --staged --name-only".split())
 
     # Filter out non-python or deleted files.
     changed_files = [f.strip() for f in output.splitlines()]
