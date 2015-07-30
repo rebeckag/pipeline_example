@@ -75,7 +75,7 @@ def run_pylint():
     for file in changed_files:
         output = execute_system_cmd("pylint -f text {}".format(file).split())
 
-        results_re = re.compile(r"Your code has been rated at ([\d\.]+)/10")
+        results_re = re.compile(r"Your code has been rated at (-?[\d\.]+)/10")
         results[file] = float(results_re.findall(output)[0])
 
     # Display a summary of the results (if any files were checked).
@@ -86,7 +86,7 @@ def run_pylint():
             (grade, color) = (
                 "FAIL", Colors.FAIL) if result < PYLINT_PASS_THRESHOLD else (
                 "pass", Colors.OKGREEN)
-            result_line = "[ {} ] {}: {:.2}/10".format(grade, file, result)
+            result_line = "[ {} ] {}: {:.2f}/10".format(grade, file, result)
             print(color_text(indent_output(result_line), color))
 
     # Signal if any of the files failed the Pylint test
