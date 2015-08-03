@@ -75,8 +75,12 @@ def run_pylint():
     for file in changed_files:
         output = execute_system_cmd("pylint -f text {}".format(file).split())
 
-        results_re = re.compile(r"Your code has been rated at (-?[\d\.]+)/10")
-        results[file] = float(results_re.findall(output)[0])
+        results_regexp = re.compile(r"Your code has been rated at (-?[\d\.]+)/10")
+        matches = results_regexp.findall(output)
+        if not matches:  # pylint did not give the expected output
+            results[file] = float("-inf")  # set -inf to enforce manual check
+        else:
+            results[file] = float(matches[0])
 
     # Display a summary of the results (if any files were checked).
     if len(results.values()) > 0:
