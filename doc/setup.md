@@ -4,16 +4,25 @@
     * If you're using git in PyCharm, make sure to install the packages
       globally (with `sudo`), even if you are using virtual environments
       (PyCharm does not activate virtual environments in Terminal).
+
     * If you're using git from the command line and virtual environments with
       `virtualenvwrapper`, add the install command to
       `$VIRTUALENVWRAPPER_HOOK_DIR/postmkvirtualenv` to make sure pep8 and
       pylint is available in all newly created virtual environments).
+
   * Create a git template directory and add it to the global git configuration:
-        mkdir ~/.git_template
-        git config --global init.templatedir '~/.git_template'
+
+         ```bash
+         mkdir ~/.git_template
+         git config --global init.templatedir '~/.git_template'
+         ```
+
   * Make the `githooks/code_analysis.py` script a *pre-commit hook*:
-        cp code_analysis.py ~/.git_template/hooks/pre-commit
-        chmod u+x ~/.git_template/hooks/pre-commit
+
+         ```bash
+         cp code_analysis.py ~/.git_template/hooks/pre-commit
+         chmod u+x ~/.git_template/hooks/pre-commit
+         ```
 
   * Re-initialize all local git repositories with `git init`.
 
@@ -45,10 +54,12 @@
 the output produced by Pylint. All messages (and their code) can be found at
 http://docs.pylint.org/features.html
 
+       ```
        [MESSAGES CONTROL]
        # Only produce global evaluation report (RP0004)
        enable=RP0004
        disable=RP0001,RP0002,RP0003,RP0101,RP0401,RP0402,RP0701,RP0801
+       ```
 
 * Start producing awesome stuff
   * Write tests
