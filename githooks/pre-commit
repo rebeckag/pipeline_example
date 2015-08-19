@@ -17,12 +17,11 @@ import os
 import re
 import subprocess
 import sys
-
-# Threshold for code to pass the Pylint test. 10 is the highest score Pylint
-# will give to any peice of code.
 import tempfile
 import shutil
 
+# Threshold for code to pass the Pylint test. 10 is the highest score Pylint
+# will give to any piece of code.
 PYLINT_PASS_THRESHOLD = 7
 
 
