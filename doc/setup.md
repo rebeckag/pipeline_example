@@ -1,14 +1,15 @@
 # One-time setup
 * Setup local git hook for running `pep8` and `pylint` before commit:
-  * `pip install pep8 pylint`
+  * `pip install pep8 pylint tox pytest`
     * If you're using git in PyCharm, make sure to install the packages
       globally (with `sudo`), even if you are using virtual environments
       (PyCharm does not activate virtual environments in Terminal).
 
     * If you're using git from the command line and virtual environments with
       `virtualenvwrapper`, add the install command to
-      `$VIRTUALENVWRAPPER_HOOK_DIR/postmkvirtualenv` to make sure pep8 and
-      pylint is available in all newly created virtual environments).
+      `$VIRTUALENVWRAPPER_HOOK_DIR/postmkvirtualenv` to make sure 
+      pep8, pylint, tox and pytest is available in all newly created virtual
+      environments).
 
   * Create a git template directory and add it to the global git configuration:
 
@@ -17,11 +18,11 @@
          git config --global init.templatedir '~/.git_template'
          ```
 
-  * Make the `githooks/pre-commit.py` script a *pre-commit hook*:
+  * Copy all git hooks to the git template directory:
 
          ```bash
-         cp githooks/pre-commit ~/.git_template/hooks/pre-commit
-         chmod u+x ~/.git_template/hooks/pre-commit
+         cp -a githooks/. ~/.git_template/hooks
+         chmod u+x ~/.git_template/hooks/*
          ```
 
   * Re-initialize all local git repositories with `git init`.

@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+"""
+A pre-push hook for git that runs all tests using tox or falls back
+on py.test otherwise.
+
+This script must be located at ``$REPO/.git/hooks/pre-push`` and be
+executable.
+
+Copyright 2015 Rebecka Gulliksson - MIT Licensed.
+"""
+from subprocess import STDOUT
+import sys
+import subprocess
+
+
+class NoToxError(Exception):
+    pass
+
+
+def execute_system_cmd(cmd, **kwargs):
+    try:
+        output = subprocess.check_output(cmd, **kwargs)
+        ret_code = 0
+    except subprocess.CalledProcessError as e:
+        output = e.output
+        ret_code = e.returncode
+
+    return ret_code, output.decode("utf-8")
+
+
+def run_tox():
+    ret_code, output = execute_system_cmd("tox -- --color=yes".split(),
+                                          stderr=STDOUT)
+    if output == "ERROR: toxini file \'tox.ini\' not found\n":
+        raise NoToxError()
+
+    print(output)
+    return ret_code == 0
+
+
+def run_pytest():
+    ret_code, output = execute_system_cmd("py.test --color=yes".split(),
+                                          stderr=STDOUT)
+    print(output)
+
+    return ret_code == 0
+
+
+if __name__ == "__main__":
+    try:
+        if not run_tox():
+            print("git: fatal: tox failed")
+            sys.exit(1)
+    except NoToxError:
+        if not run_pytest():
+            print("git: fatal: pytest failed")
+            sys.exit(1)
