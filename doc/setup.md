@@ -17,10 +17,10 @@
          git config --global init.templatedir '~/.git_template'
          ```
 
-  * Make the `githooks/code_analysis.py` script a *pre-commit hook*:
+  * Make the `githooks/pre-commit.py` script a *pre-commit hook*:
 
          ```bash
-         cp code_analysis.py ~/.git_template/hooks/pre-commit
+         cp githooks/pre-commit ~/.git_template/hooks/pre-commit
          chmod u+x ~/.git_template/hooks/pre-commit
          ```
 
