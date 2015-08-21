@@ -30,7 +30,7 @@ def execute_system_cmd(cmd, **kwargs):
 
 
 def run_tox():
-    ret_code, output = execute_system_cmd("tox -- --color=yes".split(),
+    ret_code, output = execute_system_cmd("tox",
                                           stderr=STDOUT)
     if output == "ERROR: toxini file \'tox.ini\' not found\n":
         raise NoToxError()
