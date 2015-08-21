@@ -135,13 +135,12 @@ def run_pep8(files):
     print(color_text("No PEP8 style violations was detected.", Colors.OKBLUE))
     return True
 
-
 @contextmanager
 def git_staged_files():
     """Ensure only the staged version of files are used for the checks instead
     of the working copy."""
 
-    tmp_dir = tempfile.mkdtemp()
+    tmp_dir = tempfile.mkdtemp(dir="./")
 
     # find all added/copied/modified/renamed files in git staging
     files = execute_system_cmd(
@@ -163,11 +162,11 @@ def git_staged_files():
         execute_system_cmd(cmd.split(), tmp_filename)
 
     # change working dir to get prettier file paths in output
-    with working_directory(tmp_dir):
-        try:
+    try:
+        with working_directory(tmp_dir):
             yield files
-        finally:
-            shutil.rmtree(tmp_dir)
+    finally:
+        shutil.rmtree(tmp_dir)
 
 
 @contextmanager
