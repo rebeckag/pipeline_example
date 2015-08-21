@@ -164,9 +164,10 @@ def git_staged_files():
 
     # change working dir to get prettier file paths in output
     with working_directory(tmp_dir):
-        yield files
-
-    shutil.rmtree(tmp_dir)
+        try:
+            yield files
+        finally:
+            shutil.rmtree(tmp_dir)
 
 
 @contextmanager
