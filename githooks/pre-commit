@@ -40,13 +40,29 @@ def color_text(text, color):
     return color + text + Colors.ENDC
 
 
-def execute_system_cmd(cmd):
+def run_cmd_with_output_file(cmd, output_file):
+    with open(output_file, "wb") as output:
+        try:
+            subprocess.check_call(cmd, stdout=output)
+            return None
+        except subprocess.CalledProcessError as e:
+            return e.output
+
+
+def run_cmd(cmd):
     try:
         output = subprocess.check_output(cmd)
     except subprocess.CalledProcessError as e:
         output = e.output
 
     return output.decode("utf-8")
+
+
+def execute_system_cmd(cmd, output_file=None):
+    if output_file:
+        return run_cmd_with_output_file(cmd, output_file)
+    else:
+        return run_cmd(cmd)
 
 
 def indent_output(output):
@@ -144,14 +160,11 @@ def git_staged_files():
 
         # write the staged file to a temporary file
         cmd = "git show :{}".format(file)
-        data = execute_system_cmd(cmd.split())
-        # manually write to file since stdout redirect won't work with execute_system_cmd
-        with open(tmp_filename, "w") as f:
-            f.write(data)
+        execute_system_cmd(cmd.split(), tmp_filename)
 
     # change working dir to get prettier file paths in output
     with working_directory(tmp_dir):
-        yield files.splitlines()
+        yield files
 
     shutil.rmtree(tmp_dir)
 
