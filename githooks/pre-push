@@ -49,6 +49,7 @@ def run_pytest():
 
 if __name__ == "__main__":
     try:
+        print("Running tests...")
         if not run_tox():
             print("git: fatal: tox failed")
             sys.exit(1)
